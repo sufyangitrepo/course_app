@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ course.course_name }}</h1>
+        <p>{{ course.course_description }}</p>
+        <img class="card-img-top" src="{{ course.course_img.url }}" alt="">
+        <div class="col">
+            {% for module in course.modules.all %}
+                <div class="col-md-4">
+                    <h3>{{ module.course_module_name }}</h3>
+                    <p>{{ module.module_description}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

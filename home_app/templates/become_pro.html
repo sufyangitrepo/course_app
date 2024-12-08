@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+    <style>
+        #card-element {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        #card-errors {
+            color: red;
+        }
+    </style>
+  <div class="container mt-5">
+    <div class="row">
+        <div class='col-lg-6'>
+            <h3>Why become pro?</h3>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,</p>
+            <form method="post" action="{% url 'become_pro' %}" id="payment-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Membership type</label>
+                    <select
+                        class="form-control"
+                        name="membership"
+                    >
+                        <option>Choose</option>
+                        <option value="monthly">Monthly - 1000 ₹</option>
+                        <option value="yearly">Yearly - 4000 ₹</option>
+                    </select>
+                    <div>
+                        <label for="card-element">Credit or Debit Card</label>
+                        <div id="card-element">
+                        </div>
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+                    
+                </div>
+                <button class="btn btn-primary mt-3">Become pro</button>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <img src="data:image/png;base64,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" class="img-responsive"/>
+        </div>
+        <script>
+            // Initialize Stripe
+            const stripe = Stripe('{{ publishable_key }}'); // Replace with your Publishable Key
+            const elements = stripe.elements();
+    
+            // Create an instance of the card Element
+            const card = elements.create('card');
+            card.mount('#card-element');
+    
+            // Handle real-time validation errors from the card Element
+            card.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+    
+            // Handle form submission
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                // Create a token
+                const { token, error } = await stripe.createToken(card);
+    
+                if (error) {
+                    // Inform the user if there was an error
+                    const errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = error.message;
+                } else {
+                    // Send the token to your server
+                    stripeTokenHandler(token);
+                }
+            });
+    
+            // Submit the token and other form data to your server
+            function stripeTokenHandler(token) {
+                const form = document.getElementById('payment-form');
+                const hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'requestToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+                // Submit the form
+                form.submit();
+            }
+        </script>
+    </div>
+  </div>
+  
+{% endblock %}
