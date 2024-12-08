@@ -66,7 +66,7 @@ def become_pro(request: HttpRequest):
             amount=course_amount * 100,
             currency='PKR',
             description='membership',
-            # confirm=True,
+            confirm=True,
             automatic_payment_methods={
                 'enabled': True,
                 'allow_redirects': 'never',
